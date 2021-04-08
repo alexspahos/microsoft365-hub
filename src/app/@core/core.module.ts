@@ -8,7 +8,6 @@ import { throwIfAlreadyLoaded } from './module-import-guard';
 import { AnalyticsService, SeoService } from './utils';
 import { UserData } from './data/users';
 import { UserService } from './mock/users.service';
-import { MockDataModule } from './mock/mock-data.module';
 
 const socialLinks = [
   {
@@ -40,7 +39,6 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
 }
 
 export const NB_CORE_PROVIDERS = [
-  ...MockDataModule.forRoot().providers,
   ...DATA_SERVICES,
   ...NbAuthModule.forRoot({
 
