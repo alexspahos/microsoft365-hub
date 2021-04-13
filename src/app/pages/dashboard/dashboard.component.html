@@ -1,5 +1,16 @@
 <div class="row">
   <nb-card>
-    <nb-card-body>Hello from ngx-admin sandbox project.</nb-card-body>
+    <nb-card-body>
+        <div *ngIf="account">
+            <h5>Hello {{ account.name }} from ngx-admin sandbox project.</h5>
+            <div>{{ account.environment }}</div>
+            <div>{{ account.homeAccountId }}</div>
+            <div>{{ account.idTokenClaims }}</div>
+            <div>{{ account.localAccountId }}</div>
+            <div>{{ account.username }}</div>
+            <div>{{ account.tenantId }}</div>
+        </div>
+        <button nbButton (click)="logout()" *ngIf="isLoggedIn()">Logout</button>
+    </nb-card-body>
   </nb-card>
 </div>

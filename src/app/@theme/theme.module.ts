@@ -19,7 +19,6 @@ import { NbSecurityModule } from '@nebular/security';
 import {
   FooterComponent,
   HeaderComponent,
-  LayoutDirectionSwitcherComponent,
   SearchInputComponent,
   SwitcherComponent,
 } from './components';
@@ -56,7 +55,6 @@ const NB_MODULES = [
 ];
 const COMPONENTS = [
   SwitcherComponent,
-  LayoutDirectionSwitcherComponent,
   HeaderComponent,
   FooterComponent,
   SearchInputComponent,
