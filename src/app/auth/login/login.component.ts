@@ -22,8 +22,6 @@ export class LoginComponent implements OnInit {
         // tslint:disable-next-line: deprecation
         this.msalService.loginPopup().subscribe((res: AuthenticationResult) => {
             this.msalService.instance.setActiveAccount(res.account);
-            // tslint:disable-next-line: no-console
-            console.log(res.account);
             this.router.navigate(['pages/dashboard']);
         });
     }
