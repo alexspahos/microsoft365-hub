@@ -2,7 +2,7 @@
   <nb-card>
     <nb-card-body>
         <div *ngIf="account">
-            <h5>Hello {{ account.name }} from ngx-admin sandbox project.</h5>
+            <h5>Hello {{ account.name }}!</h5>
             <div>{{ account.environment }}</div>
             <div>{{ account.homeAccountId }}</div>
             <div>{{ account.idTokenClaims }}</div>
@@ -11,6 +11,18 @@
             <div>{{ account.tenantId }}</div>
         </div>
         <button nbButton (click)="logout()" *ngIf="isLoggedIn()">Logout</button>
+        <button nbButton (click)="getProfile()" *ngIf="isLoggedIn()">my profile</button>
+        <div *ngIf="profile">
+            <p><strong>Display Name: </strong> {{profile?.displayName}}</p>
+            <p><strong>Job Title: </strong> {{profile?.jobTitle}}</p>
+            <p><strong>E-mail: </strong> {{profile?.mail}}</p>
+            <p><strong>Mobile Phone: </strong> {{profile?.mobilePhone}}</p>
+            <p><strong>Preferred Language: </strong>{{profile?.preferredLanguage}} </p>
+            <p><strong>First Name: </strong> {{profile?.givenName}}</p>
+            <p><strong>Last Name: </strong> {{profile?.surname}}</p>
+            <p><strong>Principal Name: </strong> {{profile?.userPrincipalName}}</p>
+            <p><strong>Id: </strong> {{profile?.id}}</p>
+        </div>
     </nb-card-body>
   </nb-card>
 </div>

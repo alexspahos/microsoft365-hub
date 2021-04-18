@@ -6,7 +6,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
@@ -30,6 +30,8 @@ import {
     MSAL_GUARD_CONFIG,
     MsalGuard,
     MsalBroadcastService,
+    MsalInterceptorConfiguration,
+    MSAL_INTERCEPTOR_CONFIG,
 } from '@azure/msal-angular';
 import { BrowserCacheLocation, InteractionType, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
 import { LoginComponent } from './auth/login/login.component';
@@ -61,6 +63,16 @@ export function MSALInstanceFactory(): IPublicClientApplication {
     });
 }
 
+export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
+    const protectedResourceMap = new Map<string, Array<string>>();
+    protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
+
+    return {
+        interactionType: InteractionType.Redirect,
+        protectedResourceMap,
+    };
+}
+
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     return {
         interactionType: InteractionType.Redirect,
@@ -69,7 +81,7 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
         },
         loginFailedRoute: '/login-failed',
     };
-  }
+}
 
 @NgModule({
     declarations: [AppComponent, LoginComponent],
@@ -94,12 +106,21 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     ],
     providers: [
         {
+            provide: HTTP_INTERCEPTORS,
+            useClass: MsalInterceptor,
+            multi: true,
+        },
+        {
             provide: MSAL_INSTANCE,
             useFactory: MSALInstanceFactory,
         },
         {
             provide: MSAL_GUARD_CONFIG,
             useFactory: MSALGuardConfigFactory,
+        },
+        {
+            provide: MSAL_INTERCEPTOR_CONFIG,
+            useFactory: MSALInterceptorConfigFactory,
         },
         MsalService,
         MsalGuard,
