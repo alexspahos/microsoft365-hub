@@ -33,51 +33,30 @@ import {
     MsalInterceptorConfiguration,
     MSAL_INTERCEPTOR_CONFIG,
 } from '@azure/msal-angular';
-import { BrowserCacheLocation, InteractionType, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
+import { InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
 import { LoginComponent } from './auth/login/login.component';
-
-const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
-
-export function loggerCallback(logLevel: LogLevel, message: string) {
-    // tslint:disable-next-line: no-console
-    console.log(message);
-}
+import { msalConfig, protectedResources } from './auth-config';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
-    return new PublicClientApplication({
-        auth: {
-            clientId: 'a10d0af6-6eab-49a6-915d-7be4f1eeb43c', // This is your client ID
-            redirectUri: 'http://localhost:4200', // This is your redirect URI
-        },
-        cache: {
-            cacheLocation: BrowserCacheLocation.LocalStorage,
-            storeAuthStateInCookie: isIE, // set to true for IE 11. Remove this line to use Angular Universal
-        },
-        system: {
-            loggerOptions: {
-                loggerCallback,
-                logLevel: LogLevel.Info,
-                piiLoggingEnabled: false,
-            },
-        },
-    });
+    return new PublicClientApplication(msalConfig);
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
     const protectedResourceMap = new Map<string, Array<string>>();
     protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
+    protectedResourceMap.set(protectedResources.auditCustomerApi.endpoint, protectedResources.auditCustomerApi.scopes);
 
     return {
-        interactionType: InteractionType.Redirect,
+        interactionType: InteractionType.Popup,
         protectedResourceMap,
     };
 }
 
 export function MSALGuardConfigFactory(): MsalGuardConfiguration {
     return {
-        interactionType: InteractionType.Redirect,
+        interactionType: InteractionType.Popup,
         authRequest: {
-            scopes: ['user.read'],
+            scopes: ['user.read', ...protectedResources.auditCustomerApi.scopes],
         },
         loginFailedRoute: '/login-failed',
     };

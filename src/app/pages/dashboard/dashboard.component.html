@@ -3,15 +3,25 @@
     <nb-card-body>
         <div *ngIf="account">
             <h5>Hello {{ account.name }}!</h5>
-            <div>{{ account.environment }}</div>
-            <div>{{ account.homeAccountId }}</div>
-            <div>{{ account.idTokenClaims }}</div>
-            <div>{{ account.localAccountId }}</div>
-            <div>{{ account.username }}</div>
-            <div>{{ account.tenantId }}</div>
+            <div>environment: {{ account.environment }}</div>
+            <div>homeAccountId: {{ account.homeAccountId }}</div>
+            <div>idTokenClaims:
+                <table>
+                    <tr *ngFor="let claim of claimsList">
+                        <td>{{ claim.id }}</td>
+                        <td>{{ claim.claim }}</td>
+                        <td>{{ claim.value }}</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div>localAccountId: {{ account.localAccountId }}</div>
+            <div>username: {{ account.username }}</div>
+            <div>tenantId: {{ account.tenantId }}</div>
         </div>
         <button nbButton (click)="logout()" *ngIf="isLoggedIn()">Logout</button>
         <button nbButton (click)="getProfile()" *ngIf="isLoggedIn()">my profile</button>
+        <button nbButton (click)="getCustomer()" *ngIf="isLoggedIn()">get customer</button>
         <div *ngIf="profile">
             <p><strong>Display Name: </strong> {{profile?.displayName}}</p>
             <p><strong>Job Title: </strong> {{profile?.jobTitle}}</p>

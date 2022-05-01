@@ -5,7 +5,7 @@
  */
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
-import { AuthenticationResult, InteractionStatus, InteractionType, PopupRequest, RedirectRequest } from '@azure/msal-browser';
+import { InteractionStatus } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
 import { AnalyticsService } from './@core/utils/analytics.service';
 import { SeoService } from './@core/utils/seo.service';
@@ -19,7 +19,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly _destroying$ = new Subject<void>();
 
     constructor(
-        @Inject(MSAL_GUARD_CONFIG) private msalGuardConfig: MsalGuardConfiguration,
         private authService: MsalService,
         private msalBroadcastService: MsalBroadcastService,
         private analytics: AnalyticsService,
@@ -32,7 +31,6 @@ export class AppComponent implements OnInit, OnDestroy {
                 filter((status: InteractionStatus) => status === InteractionStatus.None),
                 takeUntil(this._destroying$),
             )
-            // tslint:disable-next-line: deprecation
             .subscribe(() => {
                 this.checkAndSetActiveAccount();
             });
