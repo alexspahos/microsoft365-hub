@@ -3,8 +3,8 @@
  * Copyright Akveo. All Rights Reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MsalService, MsalBroadcastService, MSAL_GUARD_CONFIG, MsalGuardConfiguration } from '@azure/msal-angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MsalService, MsalBroadcastService } from '@azure/msal-angular';
 import { InteractionStatus } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
 import { AnalyticsService } from './@core/utils/analytics.service';

@@ -35,14 +35,15 @@ import {
 } from '@azure/msal-angular';
 import { InteractionType, IPublicClientApplication, PublicClientApplication } from '@azure/msal-browser';
 import { LoginComponent } from './auth/login/login.component';
-import { msalConfig, protectedResources } from './auth-config';
+import { msalConfig } from './auth-config';
+import { protectedResources } from 'environments/environment';
 
 export function MSALInstanceFactory(): IPublicClientApplication {
     return new PublicClientApplication(msalConfig);
 }
 
 export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-    const protectedResourceMap = new Map<string, Array<string>>();
+    const protectedResourceMap = new Map<string, Array<string> | null>();
     protectedResourceMap.set('https://graph.microsoft.com/v1.0/me', ['user.read']);
     protectedResourceMap.set(protectedResources.auditCustomerApi.endpoint, protectedResources.auditCustomerApi.scopes);
 

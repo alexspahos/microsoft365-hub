@@ -24,10 +24,3 @@ export const msalConfig: Configuration = {
         },
     },
 };
-
-export const protectedResources = {
-    auditCustomerApi: {
-      endpoint: 'http://localhost:15701/Customer',
-      scopes: ['api://audit-customer-api/customers.read', 'api://audit-customer-api/customers.write'],
-    },
-};

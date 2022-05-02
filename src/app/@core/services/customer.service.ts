@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { protectedResources } from 'app/auth-config';
+import { protectedResources } from '../../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Customer } from '../models/customer';
