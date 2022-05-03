@@ -9,11 +9,19 @@ import { Customer } from '../models/customer';
     providedIn: 'root',
 })
 export class CustomerService {
+    private readonly resourceUrl = protectedResources.auditCustomerApi.endpoint;
     constructor(private httpClient: HttpClient) {
     }
 
+    public getCustomers(): Observable<Customer[]> {
+        return this.httpClient.get<Customer[]>(this.resourceUrl)
+            .pipe(
+                catchError(this.handleError),
+            );
+    }
+
     public getCustomer(customerId: string): Observable<Customer> {
-        return this.httpClient.get<Customer>(protectedResources.auditCustomerApi.endpoint + '/' + customerId)
+        return this.httpClient.get<Customer>(this.resourceUrl + '/' + customerId)
             .pipe(
                 catchError(this.handleError),
             );

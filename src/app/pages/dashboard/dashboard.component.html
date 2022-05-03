@@ -22,6 +22,7 @@
         <button nbButton (click)="logout()" *ngIf="isLoggedIn()">Logout</button>
         <button nbButton (click)="getProfile()" *ngIf="isLoggedIn()">my profile</button>
         <button nbButton (click)="getCustomer()" *ngIf="isLoggedIn()">get customer</button>
+        <button nbButton (click)="getCustomers()" *ngIf="isLoggedIn()">get customers</button>
         <div *ngIf="profile">
             <p><strong>Display Name: </strong> {{profile?.displayName}}</p>
             <p><strong>Job Title: </strong> {{profile?.jobTitle}}</p>

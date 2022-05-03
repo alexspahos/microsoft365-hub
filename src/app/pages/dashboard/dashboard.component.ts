@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 import { AccountInfo } from '@azure/msal-common';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Customer } from '../../@core/models/customer';
 import { CustomerService } from '../../@core/services/customer.service';
 
@@ -27,11 +29,13 @@ export class Claim {
     selector: 'ngx-dashboard',
     templateUrl: './dashboard.component.html',
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
+    private readonly _destroying$ = new Subject<void>();
     account: AccountInfo;
     profile: ProfileType;
     claimsList: Claim[] = [];
     customer: Customer;
+    customers: Customer[];
 
     constructor(
         private msalService: MsalService,
@@ -41,6 +45,11 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.getAccount();
+    }
+
+    ngOnDestroy(): void {
+        this._destroying$.next(undefined);
+        this._destroying$.complete();
     }
 
     isLoggedIn(): boolean {
@@ -74,7 +83,15 @@ export class DashboardComponent implements OnInit {
         this.httpClient.get('https://graph.microsoft.com/v1.0/me').subscribe(res => this.profile = res);
     }
 
+    getCustomers() {
+        this.customerService.getCustomers()
+            .pipe(takeUntil(this._destroying$))
+            .subscribe(res => this.customers = res);
+    }
+
     getCustomer() {
-        this.customerService.getCustomer('3fa85f64-5717-4562-b3fc-2c963f66afa6').subscribe(res => this.customer = res);
+        this.customerService.getCustomer('3fa85f64-5717-4562-b3fc-2c963f66afa6')
+            .pipe(takeUntil(this._destroying$))
+            .subscribe(res => this.customer = res);
     }
 }
